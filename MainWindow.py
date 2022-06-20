@@ -50,14 +50,23 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def b_next_clicked(self):
+        self.page_serie += 1
+        self.display_serie(self.page_serie)
+    
+    def b_back_clicked(self):
+        self.page_serie -= 1
+        self.display_serie(self.page_serie)
+
+    def display_serie(self, indice_serie):
         self.textDisplaySeries.clear()
         self.textDisplaySeries.setAlignment(QtCore.Qt.AlignCenter)
 
         text_list = self.coach_sport.liste_affichage[self.page_serie]
-        self.page_serie += 1
+        
         text = ""
         for i in text_list:
             self.textDisplaySeries.insertPlainText(i)
+
     
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
