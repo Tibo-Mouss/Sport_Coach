@@ -1,98 +1,58 @@
 import sys
-from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QApplication, QPushButton, QWidget, QAction, QTabWidget,QVBoxLayout
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot
 
-
-class MainWindow(QtWidgets.QWidget):
-
-    switch_window = QtCore.pyqtSignal(str)
-
-    def __init__(self):
-        QtWidgets.QWidget.__init__(self)
-        self.setWindowTitle('Main Window')
-
-        layout = QtWidgets.QGridLayout()
-
-        self.line_edit = QtWidgets.QLineEdit()
-        layout.addWidget(self.line_edit)
-
-        self.button = QtWidgets.QPushButton('Switch Window')
-        self.button.clicked.connect(self.switch)
-        layout.addWidget(self.button)
-
-        self.setLayout(layout)
-
-    def switch(self):
-        self.switch_window.emit(self.line_edit.text())
-
-
-class WindowTwo(QtWidgets.QWidget):
-
-    def __init__(self, text):
-        QtWidgets.QWidget.__init__(self)
-        self.setWindowTitle('Window Two')
-
-        layout = QtWidgets.QGridLayout()
-
-        self.label = QtWidgets.QLabel(text)
-        layout.addWidget(self.label)
-
-        self.button = QtWidgets.QPushButton('Close')
-        self.button.clicked.connect(self.close)
-
-        layout.addWidget(self.button)
-
-        self.setLayout(layout)
-
-
-class Login(QtWidgets.QWidget):
-
-    switch_window = QtCore.pyqtSignal()
+class App(QMainWindow):
 
     def __init__(self):
-        QtWidgets.QWidget.__init__(self)
-        self.setWindowTitle('Login')
-
-        layout = QtWidgets.QGridLayout()
-
-        self.button = QtWidgets.QPushButton('Login')
-        self.button.clicked.connect(self.login)
-
-        layout.addWidget(self.button)
-
-        self.setLayout(layout)
-
-    def login(self):
-        self.switch_window.emit()
-
-
-class Controller:
-
-    def __init__(self):
-        pass
-
-    def show_login(self):
-        self.login = Login()
-        self.login.switch_window.connect(self.show_main)
-        self.login.show()
-
-    def show_main(self):
-        self.window = MainWindow()
-        self.window.switch_window.connect(self.show_window_two)
-        self.login.close()
-        self.window.show()
-
-    def show_window_two(self, text):
-        self.window_two = WindowTwo(text)
-        self.window.close()
-        self.window_two.show()
-
-
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    controller = Controller()
-    controller.show_login()
-    sys.exit(app.exec_())
-
+        super().__init__()
+        self.title = 'PyQt5 tabs - pythonspot.com'
+        self.left = 0
+        self.top = 0
+        self.width = 300
+        self.height = 200
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+        
+        self.table_widget = MyTableWidget(self)
+        self.setCentralWidget(self.table_widget)
+        
+        self.show()
+    
+class MyTableWidget(QWidget):
+    
+    def __init__(self, parent):
+        super(QWidget, self).__init__(parent)
+        self.layout = QVBoxLayout(self)
+        
+        # Initialize tab screen
+        self.tabs = QTabWidget()
+        self.tab1 = QWidget()
+        self.tab2 = QWidget()
+        self.tabs.resize(300,200)
+        
+        # Add tabs
+        self.tabs.addTab(self.tab1,"Tab 1")
+        self.tabs.addTab(self.tab2,"Tab 2")
+        
+        # Create first tab
+        self.tab1.layout = QVBoxLayout(self)
+        self.pushButton1 = QPushButton("PyQt5 button")
+        self.tab1.layout.addWidget(self.pushButton1)
+        self.tab1.setLayout(self.tab1.layout)
+        
+        # Add tabs to widget
+        self.layout.addWidget(self.tabs)
+        self.setLayout(self.layout)
+        
+    @pyqtSlot()
+    def on_click(self):
+        print("\n")
+        for currentQTableWidgetItem in self.tableWidget.selectedItems():
+            print(currentQTableWidgetItem.row(), currentQTableWidgetItem.column(), currentQTableWidgetItem.text())
 
 if __name__ == '__main__':
-    main()
+    app = QApplication(sys.argv)
+    ex = App()
+    sys.exit(app.exec_())
