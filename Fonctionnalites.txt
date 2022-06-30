@@ -1,0 +1,4 @@
+Retour arriere
+timer
+ecran d'acceuil
+historique
