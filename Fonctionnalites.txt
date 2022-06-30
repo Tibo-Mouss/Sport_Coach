@@ -1,2 +1,4 @@
 ecran d'acceuil
 historique
+changer les paramètres
+un bouton pour lancer un nouveau coach

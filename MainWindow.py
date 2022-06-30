@@ -84,7 +84,7 @@ class Ui_MainWindow(object):
 
     # Bouton Next pour afficher la série suivante
     def b_next_clicked(self):
-        if self.page_serie < len(self.coach_sport.Seance_creation.liste_series) - 1:
+        if self.page_serie < len(self.coach_sport.seance.liste_series) - 1:
             self.page_serie += 1
             self.display_serie(self.page_serie)
     
@@ -105,6 +105,7 @@ class Ui_MainWindow(object):
         
         # Affiche la série sur le GUI
         for i in text_list:
+            print(i)
             self.textDisplaySeries.insertPlainText(i)
 
     def display_timer(self):

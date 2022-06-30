@@ -37,8 +37,11 @@ class Serie:
 
     def copy(self):
         serie = Serie()
-        serie.add(self.liste_exos)
+        serie.liste_exos = self.liste_exos.copy()
         return serie
+
+    def clear(self):
+        self.liste_exos = []
         
 
 

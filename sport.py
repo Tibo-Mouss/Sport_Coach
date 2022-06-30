@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from contextlib import nullcontext
 import csv
 import os
 from random import randint
@@ -8,55 +10,65 @@ from Classes_Exos import Exercice, Seance, Serie
 
 class Sport_Coach_Generator():
 
-    liste_widgets = []
-
     points = 1500
-    liste_activites = []
+    """ Points dépensés pendant une séance """
+    liste_exercices = []
+    """ Liste des exercices disponibles avec leur pts du style : [ [str : Exercice, str : points] ] """
     max_pts_exercice = 200
+    """ Borne supérieure de l'intervalle de pts qu'un exercice peut prendre """
     min_pts_exercice = 100
+    """ Borne inférieure de l'intervalle de pts qu'un exercice peut prendre """
     iterations_activite_max = 50
+    """ Limite d'itérations d'un exercice """
     pts_pour_pause = 500
-    Seance_creation = Seance()  #Seance en cours de création
+    """ Limite de pts pour déclencher une pause """
+    seance = Seance()
+    """ Seance en cours de création """
     
 
     def __init__(self):
         self.init_series()
 
-    # Initialise des séries d'exercices à faire
+
     def init_series(self):
+        """
+            Initialise des séries d'exercices à faire
+            C'est pas juste fait dans le init parce qu'on veut pouvoir le rappeler plusieurs fois
+        """
         with open('D:/Documents/Sport/sportcsv.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
                 #print (row)
-                self.liste_activites += [row]
+                self.liste_exercices += [row]
 
+        #Ajout de l'échauffement à la séance
         serie = Serie()
         serie.add(
             Exercice("Jumping Jacks", 50),
             Exercice("Levers de genous", 50),
             Exercice("Crunchies", 20)
         )
-        self.Seance_creation.add(serie)
+        self.seance.add(serie)
 
         compteur_pour_faire_une_pause = 0
         serie = Serie()  #Utile pour ajouter a la var seance
         while self.points > 0:
-            x = self.liste_activites[randint(0,len(self.liste_activites)-1)]
+            exercice_choisi = self.liste_exercices[randint(0,len(self.liste_exercices)-1)]
             points_a_enlever = randint(self.min_pts_exercice, self.max_pts_exercice)
-            iterations_activite = points_a_enlever//int(x[1])
+            iterations_activite = points_a_enlever//int(exercice_choisi[1])
             if iterations_activite > self.iterations_activite_max:
                 iterations_activite = self.iterations_activite_max
-                points_a_enlever = iterations_activite * int(x[1])
+                points_a_enlever = iterations_activite * int(exercice_choisi[1])
             self.points -= points_a_enlever
             
-            serie.add(Exercice(x[0], str(iterations_activite)))  #On ajoute l'exercice sélectionné a la série en création
+            serie.add(Exercice(exercice_choisi[0], str(iterations_activite)))  #On ajoute l'exercice sélectionné a la série en création
 
             compteur_pour_faire_une_pause += points_a_enlever
             if compteur_pour_faire_une_pause > self.pts_pour_pause:
 
-                self.Seance_creation.add(serie.copy()) #On ajoute la série créée à la séance
-                serie = Serie()
+                self.seance.liste_series.append(serie.copy()) #On ajoute la série créée à la séance
+                serie.clear()
 
                 compteur_pour_faire_une_pause = 0
 
@@ -67,12 +79,11 @@ class Sport_Coach_Generator():
         bloc_texte = []
 
         if (serie == 0):  #Cad si c'est l'échauffement
-            bloc_texte.append(["ECHAUFFEMENT \n \n","Jumping Jacks : 50 \n","Levers de genous : 50 \n","Crunchies : 20 \n","------------------------------------- \n","LA CA VA CHIER \n"])
+            bloc_texte = ["ECHAUFFEMENT \n \n","Jumping Jacks : 50 \n","Levers de genous : 50 \n","Crunchies : 20 \n","------------------------------------- \n","LA CA VA CHIER \n"]
         else:
-            for exercice in self.Seance_creation.liste_series[serie].liste_exos: #On rajoute ligne par ligne les exercices contenus dans la série
-                print(exercice)
+            for exercice in self.seance.liste_series[serie].liste_exos: #On rajoute ligne par ligne les exercices contenus dans la série
                 bloc_texte.append(exercice.type_exo + " : " + str(exercice.iterations) + " \n")
-            if (serie == len(self.Seance_creation.liste_series) - 1):  #Cad si c'est la dernière série
+            if (serie == len(self.seance.liste_series) - 1):  #Cad si c'est la dernière série
                 bloc_texte.append("  \n ------------------------------------- \n FIN, place aux étirements ! \n")
             else:
                 bloc_texte.append("Pause d'une minute ! \n  \n")
