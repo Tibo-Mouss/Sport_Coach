@@ -84,7 +84,7 @@ class Ui_MainWindow(object):
 
     # Bouton Next pour afficher la série suivante
     def b_next_clicked(self):
-        if self.page_serie < len(self.coach_sport.liste_affichage) - 1:
+        if self.page_serie < len(self.coach_sport.Seance_creation.liste_series) - 1:
             self.page_serie += 1
             self.display_serie(self.page_serie)
     
@@ -101,10 +101,9 @@ class Ui_MainWindow(object):
         self.textDisplaySeries.setAlignment(QtCore.Qt.AlignCenter)
 
         # Récupère la série correspondante au n° de la page
-        text_list = self.coach_sport.liste_affichage[self.page_serie]
+        text_list = self.coach_sport.affichage_serie(self.page_serie)
         
         # Affiche la série sur le GUI
-        text = ""
         for i in text_list:
             self.textDisplaySeries.insertPlainText(i)
 
