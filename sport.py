@@ -1,10 +1,9 @@
-from asyncio.windows_events import NULL
-from contextlib import nullcontext
 import csv
 import os
 from random import randint
 import string
 import time
+import shelve
 
 from Classes_Exos import Exercice, Seance, Serie
 
@@ -24,6 +23,8 @@ class Sport_Coach_Generator():
     """ Limite de pts pour déclencher une pause """
     seance = Seance()
     """ Seance en cours de création """
+    cle_bdd = 0
+    """ Clé de la séance pour la récuprérer dans la bdd (jsp si ce sera utile)"""
     
 
     def __init__(self):
@@ -88,6 +89,30 @@ class Sport_Coach_Generator():
             else:
                 bloc_texte.append("Pause d'une minute ! \n  \n")
         return bloc_texte
+
+
+    def save_seance(self,temps : int):
+        """
+            Sauvegarde la séance dans la base de données.
+            Les clés utilisees dans la bdd sont juste des entiers qui augmentent au fur et a mesure.
+        """
+        memoire = shelve.open('historique')
+
+        liste_cles_str = memoire.keys()
+        print(liste_cles_str)
+        liste_cles_int = [int(x) for x in liste_cles_str]
+
+        try:
+            nouvelle_cle = max(liste_cles_int) + 1
+        except:
+            nouvelle_cle = 1
+
+        self.cle_bdd = nouvelle_cle
+
+        self.seance.temps = temps
+        memoire[str(nouvelle_cle)] = self.seance
+
+        memoire.close()
 
 
     def output_txt(self):
