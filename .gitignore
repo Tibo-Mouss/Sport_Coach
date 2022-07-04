@@ -2,3 +2,8 @@
 test.py
 testGUI.py
 testGUI2.py
+MainWindow.py
+historique.dir
+historique.dat
+historique.bak
+MainWindow.ui

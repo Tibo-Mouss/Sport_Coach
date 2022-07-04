@@ -2,7 +2,7 @@
     Définit les classes utiles pour représenter une séance de sport
 """
 
-
+import datetime
 
 from enum import Enum
 
@@ -52,6 +52,7 @@ class Seance:
 
     liste_series = []
     temps = 0
+    jour = datetime.date.today()
 
     def __init__(self, liste, temps_pris : int) -> None:
         self.liste_series = liste
