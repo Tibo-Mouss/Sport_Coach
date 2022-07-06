@@ -9,8 +9,9 @@ from Classes_Exos import Exercice, Seance, Serie
 
 class Sport_Coach_Generator():
 
-    points = 1500
-    """ Points dépensés pendant une séance """
+
+    points_depenses = 1500
+    """ Points dépensés pendant une séance (+/-) """
     liste_exercices = []
     """ Liste des exercices disponibles avec leur pts du style : [ [str : Exercice, str : points] ] """
     max_pts_exercice = 200
@@ -52,16 +53,17 @@ class Sport_Coach_Generator():
         )
         self.seance.add(serie)
 
+        points = self.points_depenses
         compteur_pour_faire_une_pause = 0
         serie = Serie()  #Utile pour ajouter a la var seance
-        while self.points > 0:
+        while points > 0:
             exercice_choisi = self.liste_exercices[randint(0,len(self.liste_exercices)-1)]
             points_a_enlever = randint(self.min_pts_exercice, self.max_pts_exercice)
             iterations_activite = points_a_enlever//int(exercice_choisi[1])
             if iterations_activite > self.iterations_activite_max:
                 iterations_activite = self.iterations_activite_max
                 points_a_enlever = iterations_activite * int(exercice_choisi[1])
-            self.points -= points_a_enlever
+            points -= points_a_enlever
             
             serie.add(Exercice(exercice_choisi[0], str(iterations_activite)))  #On ajoute l'exercice sélectionné a la série en création
 
@@ -110,7 +112,8 @@ class Sport_Coach_Generator():
         self.cle_bdd = nouvelle_cle
 
         self.seance.temps = temps
-        memoire[str(nouvelle_cle)] = self.seance
+        self.seance.points = self.points_depenses
+        memoire[str(nouvelle_cle)] = self.seance #Sauvegarde dans la BdD
 
         memoire.close()
 

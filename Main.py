@@ -61,6 +61,7 @@ class Ui_MainWindow(object):
         self.B_NextSerie.setFlat(False)
         self.B_NextSerie.setObjectName("B_NextSerie")
         self.B_PreviousSerie = QtWidgets.QPushButton(self.tab_2)
+        self.B_PreviousSerie.setEnabled(True)
         self.B_PreviousSerie.setGeometry(QtCore.QRect(290, 300, 75, 23))
         self.B_PreviousSerie.setObjectName("B_PreviousSerie")
         self.LCD_Minutes = QtWidgets.QLCDNumber(self.tab_2)
@@ -69,6 +70,9 @@ class Ui_MainWindow(object):
         self.LCD_Secondes = QtWidgets.QLCDNumber(self.tab_2)
         self.LCD_Secondes.setGeometry(QtCore.QRect(80, 300, 64, 23))
         self.LCD_Secondes.setObjectName("LCD_Secondes")
+        self.B_SeriePret = QtWidgets.QPushButton(self.tab_2)
+        self.B_SeriePret.setGeometry(QtCore.QRect(193, 145, 75, 23))
+        self.B_SeriePret.setObjectName("B_SeriePret")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setEnabled(True)
@@ -76,12 +80,16 @@ class Ui_MainWindow(object):
         self.tableHistorique = QtWidgets.QTableWidget(self.tab_3)
         self.tableHistorique.setGeometry(QtCore.QRect(10, 10, 441, 311))
         self.tableHistorique.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.tableHistorique.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
+        self.tableHistorique.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.tableHistorique.setAutoScroll(False)
+        self.tableHistorique.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.tableHistorique.setDragDropOverwriteMode(False)
+        self.tableHistorique.setAlternatingRowColors(True)
         self.tableHistorique.setCornerButtonEnabled(False)
         self.tableHistorique.setRowCount(1)
         self.tableHistorique.setColumnCount(3)
         self.tableHistorique.setObjectName("tableHistorique")
-        self.tableHistorique.horizontalHeader().setVisible(False)
+        self.tableHistorique.horizontalHeader().setVisible(True)
         self.tableHistorique.horizontalHeader().setCascadingSectionResizes(False)
         self.tableHistorique.horizontalHeader().setDefaultSectionSize(210)
         self.tableHistorique.horizontalHeader().setHighlightSections(True)
@@ -101,15 +109,35 @@ class Ui_MainWindow(object):
         self.B_PreviousSerie.clicked.connect(self.b_previous_clicked)
         # Pour connecter le bouton next à son action
         self.B_NextSerie.clicked.connect(self.b_next_clicked)
-        # Pour afficher le contenu du tableau d'historiques
-        self.affichage_historique()
+        #Pour associer les appuis de la tab bar aux affichages
+        self.tabWidget.tabBarClicked.connect(self.tab_bar_clicked)
+
+        #Cache les elements la tab Série au débu pour juste afficher un bouton
+        self.B_NextSerie.setHidden(True)
+        self.B_PreviousSerie.setHidden(True)
+        self.LCD_Minutes.setHidden(True)
+        self.LCD_Secondes.setHidden(True)
+        self.textDisplaySeries.setHidden(True)
+        # Et on associe au bouton prêt le lancement du timer et l'affichage des elements
+        self.B_SeriePret.clicked.connect(self.b_serie_pret)
+        
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
 
-        
+    def tab_bar_clicked(self, index : int) :
+        if (index == 0): #Page d'acceuil
+            pass
+        elif (index == 1): #Page de sport
+            pass
+        elif (index == 2): #Historique
+            # Pour afficher le contenu du tableau d'historiques
+            self.affichage_historique()
+        else:
+            print("Euh problème chef pourquoi t'es nul ?")
+
 
     def affichage_historique(self):
         """
@@ -120,13 +148,39 @@ class Ui_MainWindow(object):
         seances = list(memoire.values())
         tailleHistorique = len(seances)
         self.tableHistorique.setRowCount(tailleHistorique)
+
+        self.tableHistorique.setHorizontalHeaderLabels(["Date", "Temps", "Points"])
+        header = self.tableHistorique.horizontalHeader()
+        header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
         
         for i in range(tailleHistorique):
             seance = seances[i]
 
-            self.tableHistorique.setItem(i, 1, QtWidgets.QTableWidgetItem(str(seance.jour)))
+            self.tableHistorique.setItem(i, 2, QtWidgets.QTableWidgetItem(str(seance.points)))
+            temps_affiche = str(seance.temps // 60) + "min " + str(seance.temps % 60) + "s"
+            self.tableHistorique.setItem(i, 1, QtWidgets.QTableWidgetItem(temps_affiche))
+            self.tableHistorique.setItem(i, 0, QtWidgets.QTableWidgetItem(str(seance.jour)))
 
         memoire.close()
+
+
+    def b_serie_pret(self):
+        #On re affiche les elements de la tab
+        self.B_NextSerie.setHidden(False)
+        self.B_PreviousSerie.setHidden(False)
+        self.LCD_Minutes.setHidden(False)
+        self.LCD_Secondes.setHidden(False)
+        self.textDisplaySeries.setHidden(False)
+        self.B_SeriePret.setHidden(True) #Et on oublie pas de le cacher celui là
+
+        #On reinitialise le timer hop là
+        self.start_timer = time.time()
+        #Et on affiche 0 sur les deux LCD parce que il peu y avoir un ptit peu de retard
+        self.LCD_Minutes.display(0)
+        self.LCD_Secondes.display(0)
+
 
 
     # Bouton Next pour afficher la série suivante
@@ -187,6 +241,7 @@ class Ui_MainWindow(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), _translate("MainWindow", "Menu"))
         self.B_NextSerie.setText(_translate("MainWindow", "Next !"))
         self.B_PreviousSerie.setText(_translate("MainWindow", "Previous"))
+        self.B_SeriePret.setText(_translate("MainWindow", "Je suis Prêt !"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Séries"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Historique"))
 
