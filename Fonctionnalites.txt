@@ -1,9 +1,8 @@
-ecran d'acceuil
-historique
-changer les paramètres
-un bouton pour lancer un nouveau coach
+changements des paramètres
+centrer le texte dans l'historique
 
+faire plus d'exos jambes/haut
 
 
 bugs : 
-affichage echauffement
+ça affiche tjrs le jours d'aujourd'hui dans l'historique

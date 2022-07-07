@@ -52,7 +52,7 @@ class Seance:
 
     liste_series = []
     temps = 0
-    jour = datetime.date.today()
+    jour = str( datetime.date.today() )
     points = 0
 
     def __init__(self, liste, temps_pris : int) -> None:
@@ -62,7 +62,7 @@ class Seance:
     def __init__(self) -> None:
         liste_series = []
         temps = 0
-        jour = datetime.date.today()
+        jour = str( datetime.date.today() )
         points = 0
 
     def add(self, *seances):

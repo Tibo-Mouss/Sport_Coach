@@ -13,3 +13,5 @@ historique.dat
 historique.dir
 MainWindow.py
 MainWindow.ui
+*.mp4
+*.txt

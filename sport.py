@@ -9,11 +9,12 @@ from Classes_Exos import Exercice, Seance, Serie
 
 class Sport_Coach_Generator():
 
-
-    points_depenses = 1500
-    """ Points dépensés pendant une séance (+/-) """
     liste_exercices = []
     """ Liste des exercices disponibles avec leur pts du style : [ [str : Exercice, str : points] ] """
+
+    # ----- Système d'initialisation avec points -----
+    points_depenses = 1500
+    """ Points dépensés pendant une séance (+/-) """
     max_pts_exercice = 200
     """ Borne supérieure de l'intervalle de pts qu'un exercice peut prendre """
     min_pts_exercice = 100
@@ -22,6 +23,14 @@ class Sport_Coach_Generator():
     """ Limite d'itérations d'un exercice """
     pts_pour_pause = 500
     """ Limite de pts pour déclencher une pause """
+    
+
+    # ----- Système d'initialisation sans points apparents -----
+    exercices_par_serie = 4
+    nombre_series = 3
+
+    
+    
     seance = Seance()
     """ Seance en cours de création """
     cle_bdd = 0
@@ -29,20 +38,22 @@ class Sport_Coach_Generator():
     
 
     def __init__(self):
-        self.init_series()
+        pass
 
-
-    def init_series(self):
-        """
-            Initialise des séries d'exercices à faire
-            C'est pas juste fait dans le init parce qu'on veut pouvoir le rappeler plusieurs fois
-        """
+    def init_liste_exos(self):
         with open('D:/Documents/Sport/sportcsv.csv') as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
                 #print (row)
                 self.liste_exercices += [row]
+
+
+    def init_seance1(self):
+        """
+            Initialise des séries d'exercices à faire
+        """
+        self.init_liste_exos()
 
         #Ajout de l'échauffement à la séance
         serie = Serie()
@@ -74,6 +85,40 @@ class Sport_Coach_Generator():
                 serie.clear()
 
                 compteur_pour_faire_une_pause = 0
+
+    
+    def init_seance2(self):
+        """
+            Deuxieme version d'initialisation
+        """
+        self.init_liste_exos()
+        
+
+        #Ajout de l'échauffement à la séance
+        serie = Serie()
+        serie.add(
+            Exercice("Jumping Jacks", 50),
+            Exercice("Levers de genous", 50),
+            Exercice("Crunchies", 20)
+        )
+        self.seance.add(serie)
+
+        serie = Serie()  #Utile pour ajouter a la var seance
+        for i in range(self.nombre_series):
+            for i in range(self.exercices_par_serie):
+                exercice_choisi = self.liste_exercices[randint(0,len(self.liste_exercices)-1)]
+
+                points_a_enlever = randint(self.min_pts_exercice, self.max_pts_exercice)
+                iterations_activite = points_a_enlever//int(exercice_choisi[1])
+                if iterations_activite > self.iterations_activite_max:
+                    iterations_activite = self.iterations_activite_max
+                    points_a_enlever = iterations_activite * int(exercice_choisi[1])
+
+                serie.add(Exercice(exercice_choisi[0], str(iterations_activite)))  #On ajoute l'exercice sélectionné a la série en création
+
+            self.seance.liste_series.append(serie.copy()) #On ajoute la série créée à la séance
+            serie.clear()
+
 
     def affichage_serie(self, serie : int):
         """

@@ -50,6 +50,7 @@ class Ui_MainWindow(object):
         self.B_NextSerie.setFlat(False)
         self.B_NextSerie.setObjectName("B_NextSerie")
         self.B_PreviousSerie = QtWidgets.QPushButton(self.tab_2)
+        self.B_PreviousSerie.setEnabled(True)
         self.B_PreviousSerie.setGeometry(QtCore.QRect(290, 300, 75, 23))
         self.B_PreviousSerie.setObjectName("B_PreviousSerie")
         self.LCD_Minutes = QtWidgets.QLCDNumber(self.tab_2)
@@ -58,6 +59,9 @@ class Ui_MainWindow(object):
         self.LCD_Secondes = QtWidgets.QLCDNumber(self.tab_2)
         self.LCD_Secondes.setGeometry(QtCore.QRect(80, 300, 64, 23))
         self.LCD_Secondes.setObjectName("LCD_Secondes")
+        self.B_SeriePret = QtWidgets.QPushButton(self.tab_2)
+        self.B_SeriePret.setGeometry(QtCore.QRect(193, 145, 75, 23))
+        self.B_SeriePret.setObjectName("B_SeriePret")
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setEnabled(True)
@@ -65,7 +69,11 @@ class Ui_MainWindow(object):
         self.tableHistorique = QtWidgets.QTableWidget(self.tab_3)
         self.tableHistorique.setGeometry(QtCore.QRect(10, 10, 441, 311))
         self.tableHistorique.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.tableHistorique.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustIgnored)
+        self.tableHistorique.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
+        self.tableHistorique.setAutoScroll(False)
+        self.tableHistorique.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.tableHistorique.setDragDropOverwriteMode(False)
+        self.tableHistorique.setAlternatingRowColors(True)
         self.tableHistorique.setCornerButtonEnabled(False)
         self.tableHistorique.setRowCount(1)
         self.tableHistorique.setColumnCount(3)
@@ -80,7 +88,7 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab_3, "")
 
         self.retranslateUi(MainWindow)
-        self.tabWidget.setCurrentIndex(2)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -95,6 +103,7 @@ class Ui_MainWindow(object):
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p></body></html>"))
         self.B_NextSerie.setText(_translate("MainWindow", "Next !"))
         self.B_PreviousSerie.setText(_translate("MainWindow", "Previous"))
+        self.B_SeriePret.setText(_translate("MainWindow", "Je suis Prêt !"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("MainWindow", "Séries"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("MainWindow", "Historique"))
 

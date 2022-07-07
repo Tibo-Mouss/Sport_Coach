@@ -28,7 +28,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>3</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -113,6 +113,9 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
     <widget class="QPushButton" name="B_PreviousSerie">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
      <property name="geometry">
       <rect>
        <x>290</x>
@@ -145,6 +148,19 @@ p, li { white-space: pre-wrap; }
       </rect>
      </property>
     </widget>
+    <widget class="QPushButton" name="B_SeriePret">
+     <property name="geometry">
+      <rect>
+       <x>193</x>
+       <y>145</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Je suis Prêt !</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="tab_3">
     <property name="enabled">
@@ -166,10 +182,19 @@ p, li { white-space: pre-wrap; }
       <enum>Qt::ScrollBarAlwaysOff</enum>
      </property>
      <property name="sizeAdjustPolicy">
-      <enum>QAbstractScrollArea::AdjustIgnored</enum>
+      <enum>QAbstractScrollArea::AdjustToContents</enum>
+     </property>
+     <property name="autoScroll">
+      <bool>false</bool>
      </property>
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="dragDropOverwriteMode">
+      <bool>false</bool>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
      </property>
      <property name="cornerButtonEnabled">
       <bool>false</bool>
@@ -178,7 +203,7 @@ p, li { white-space: pre-wrap; }
       <number>1</number>
      </property>
      <property name="columnCount">
-      <number>2</number>
+      <number>3</number>
      </property>
      <attribute name="horizontalHeaderVisible">
       <bool>false</bool>
@@ -204,7 +229,13 @@ p, li { white-space: pre-wrap; }
      <row/>
      <column/>
      <column/>
+     <column/>
     </widget>
+   </widget>
+   <widget class="QWidget" name="tab_4">
+    <attribute name="title">
+     <string>Parametres</string>
+    </attribute>
    </widget>
   </widget>
  </widget>

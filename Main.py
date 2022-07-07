@@ -103,8 +103,6 @@ class Ui_MainWindow(object):
         self.timer_du_timer = QTimer()
         self.timer_du_timer.timeout.connect(self.display_timer)
         self.timer_du_timer.start(1000)
-        # Initialise le texte du display avec les échauffements
-        self.display_serie(0)
         # Pour connecter le bouton previous à son action
         self.B_PreviousSerie.clicked.connect(self.b_previous_clicked)
         # Pour connecter le bouton next à son action
@@ -161,25 +159,35 @@ class Ui_MainWindow(object):
             self.tableHistorique.setItem(i, 2, QtWidgets.QTableWidgetItem(str(seance.points)))
             temps_affiche = str(seance.temps // 60) + "min " + str(seance.temps % 60) + "s"
             self.tableHistorique.setItem(i, 1, QtWidgets.QTableWidgetItem(temps_affiche))
-            self.tableHistorique.setItem(i, 0, QtWidgets.QTableWidgetItem(str(seance.jour)))
+            self.tableHistorique.setItem(i, 0, QtWidgets.QTableWidgetItem(seance.jour))
 
         memoire.close()
 
+    def affichage_b_pret(self, bp_hidden : bool):
+        """ Si c'est true alors ça cache le bouton, et ça affiche tout le reste """
+        self.B_NextSerie.setHidden( not(bp_hidden) )
+        self.B_PreviousSerie.setHidden( not(bp_hidden) )
+        self.LCD_Minutes.setHidden( not(bp_hidden) )
+        self.LCD_Secondes.setHidden( not(bp_hidden) )
+        self.textDisplaySeries.setHidden( not(bp_hidden) )
+        self.B_SeriePret.setHidden( bp_hidden )
 
     def b_serie_pret(self):
         #On re affiche les elements de la tab
-        self.B_NextSerie.setHidden(False)
-        self.B_PreviousSerie.setHidden(False)
-        self.LCD_Minutes.setHidden(False)
-        self.LCD_Secondes.setHidden(False)
-        self.textDisplaySeries.setHidden(False)
-        self.B_SeriePret.setHidden(True) #Et on oublie pas de le cacher celui là
+        self.affichage_b_pret(True)
 
         #On reinitialise le timer hop là
         self.start_timer = time.time()
         #Et on affiche 0 sur les deux LCD parce que il peu y avoir un ptit peu de retard
         self.LCD_Minutes.display(0)
         self.LCD_Secondes.display(0)
+
+        #On initialise la série et remet le bon affichage de série
+        self.coach_sport.init_seance1()
+
+        # Initialise le texte du display avec les échauffements
+        self.display_serie(0)
+        self.page_serie = 0
 
 
 
@@ -190,6 +198,8 @@ class Ui_MainWindow(object):
             self.display_serie(self.page_serie)
         else: #Cad on a finit l'affichage de toute la séance, on appuit sur le bouton "J'ai finit !" --> ça enregistre la séance
             self.coach_sport.save_seance(self.temps_passe)
+            #Ca re affiche le bouton pour commencer une nouvelle séance
+            self.affichage_b_pret(False)
         
         if self.page_serie == len(self.coach_sport.seance.liste_series) - 1: #Si on est passé à la dernière page
             _translate = QtCore.QCoreApplication.translate
