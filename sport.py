@@ -11,6 +11,8 @@ class Sport_Coach_Generator():
 
     liste_exercices = []
     """ Liste des exercices disponibles avec leur pts du style : [ [str : Exercice, str : points] ] """
+    types_exercices = []
+    """ Liste les parties du corps sur lesquelles les exercices peuvent se focus """
 
     # ----- Système d'initialisation avec points -----
     points_depenses = 1500
@@ -38,22 +40,34 @@ class Sport_Coach_Generator():
     
 
     def __init__(self):
-        pass
+        self.extraction_donnes_csv()
+        print(self.types_exercices)
 
-    def init_liste_exos(self):
-        with open('D:/Documents/Sport/sportcsv.csv') as csv_file:
+    def extraction_donnes_csv(self):
+        """ Extrait toutes les données du fichier csv """
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, 'sportcsv.csv')
+
+        with open(filename) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0
             for row in csv_reader:
-                #print (row)
                 self.liste_exercices += [row]
+                
+                #On créée la liste des types d'exos qui existent
+                liste_types = row[3:]
+                for i in liste_types:
+                    if (i == ""):
+                        pass
+                    elif not (i in self.types_exercices) :
+                        self.types_exercices.append(i)
+
 
 
     def init_seance1(self):
         """
             Initialise des séries d'exercices à faire
         """
-        self.init_liste_exos()
 
         #Ajout de l'échauffement à la séance
         serie = Serie()
@@ -91,8 +105,6 @@ class Sport_Coach_Generator():
         """
             Deuxieme version d'initialisation
         """
-        self.init_liste_exos()
-        
 
         #Ajout de l'échauffement à la séance
         serie = Serie()

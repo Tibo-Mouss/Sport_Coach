@@ -1,8 +1,9 @@
 changements des paramètres
 centrer le texte dans l'historique
-
 faire plus d'exos jambes/haut
 
 
 bugs : 
 ça affiche tjrs le jours d'aujourd'hui dans l'historique
+plus agrandir les fenetres de texte et bouton pour que ça
+    s'affiche bien sur des resolutions diff
