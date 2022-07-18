@@ -1,7 +1,10 @@
 changements des paramètres
 centrer le texte dans l'historique
 faire plus d'exos jambes/haut
-
+afficher vidéos des exercices --> manque plus que d'afficher les videos
+différentes langues ?
+un bouton pause pour le timer
+phrases d'encouragement qui défilent
 
 bugs : 
 ça affiche tjrs le jours d'aujourd'hui dans l'historique

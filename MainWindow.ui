@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>471</width>
-    <height>353</height>
+    <height>364</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -28,7 +28,7 @@
     </font>
    </property>
    <property name="currentIndex">
-    <number>3</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tab">
     <attribute name="title">
@@ -37,10 +37,10 @@
     <widget class="QLabel" name="Label_bienvenue">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>120</x>
        <y>50</y>
-       <width>141</width>
-       <height>51</height>
+       <width>221</width>
+       <height>101</height>
       </rect>
      </property>
      <property name="font">
@@ -64,26 +64,6 @@
     <attribute name="title">
      <string>Séries</string>
     </attribute>
-    <widget class="QTextBrowser" name="textDisplaySeries">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>441</width>
-       <height>281</height>
-      </rect>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="html">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-    </widget>
     <widget class="QPushButton" name="B_NextSerie">
      <property name="enabled">
       <bool>true</bool>
@@ -91,7 +71,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>377</x>
-       <y>300</y>
+       <y>310</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -119,7 +99,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>290</x>
-       <y>300</y>
+       <y>310</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -132,7 +112,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>300</y>
+       <y>310</y>
        <width>64</width>
        <height>23</height>
       </rect>
@@ -142,7 +122,7 @@ p, li { white-space: pre-wrap; }
      <property name="geometry">
       <rect>
        <x>80</x>
-       <y>300</y>
+       <y>310</y>
        <width>64</width>
        <height>23</height>
       </rect>
@@ -151,8 +131,8 @@ p, li { white-space: pre-wrap; }
     <widget class="QPushButton" name="B_SeriePret">
      <property name="geometry">
       <rect>
-       <x>193</x>
-       <y>145</y>
+       <x>200</x>
+       <y>160</y>
        <width>75</width>
        <height>23</height>
       </rect>
@@ -161,6 +141,63 @@ p, li { white-space: pre-wrap; }
       <string>Je suis Prêt !</string>
      </property>
     </widget>
+    <widget class="QListWidget" name="textDisplaySeries">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>451</width>
+       <height>261</height>
+      </rect>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="autoScroll">
+      <bool>false</bool>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="defaultDropAction">
+      <enum>Qt::IgnoreAction</enum>
+     </property>
+     <property name="itemAlignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="Label_phase_serie">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>0</y>
+       <width>191</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <zorder>textDisplaySeries</zorder>
+    <zorder>B_NextSerie</zorder>
+    <zorder>B_PreviousSerie</zorder>
+    <zorder>LCD_Minutes</zorder>
+    <zorder>LCD_Secondes</zorder>
+    <zorder>B_SeriePret</zorder>
+    <zorder>Label_phase_serie</zorder>
    </widget>
    <widget class="QWidget" name="tab_3">
     <property name="enabled">

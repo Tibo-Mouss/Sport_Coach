@@ -139,7 +139,7 @@ class Sport_Coach_Generator():
         bloc_texte = []
 
         if (serie == 0):  #Cad si c'est l'échauffement
-            bloc_texte = ["ECHAUFFEMENT \n \n","Jumping Jacks : 50 \n","Levers de genous : 50 \n","Crunchies : 20 \n","------------------------------------- \n","LA CA VA CHIER \n"]
+            bloc_texte = ["Jumping Jacks : 50 \n","Levers de genous : 50 \n","Crunchies : 20 \n"]
         else:
             for exercice in self.seance.liste_series[serie].liste_exos: #On rajoute ligne par ligne les exercices contenus dans la série
                 bloc_texte.append(exercice.type_exo + " : " + str(exercice.iterations) + " \n")
@@ -148,6 +148,14 @@ class Sport_Coach_Generator():
             else:
                 bloc_texte.append("Pause d'une minute ! \n  \n")
         return bloc_texte
+
+    
+    def get_video(self, serie: int, exercice : int):
+        """ return le nom de la vidéo correspondant à l'exercice pointé """
+        nom_exercice = self.seance.liste_series[serie].liste_exos[exercice].type_exo
+        liste_noms_exercices = [i[0] for i in self.liste_exercices]
+        index_exo = liste_noms_exercices.index(nom_exercice)
+        return self.liste_exercices[index_exo][2]
 
 
     def save_seance(self,temps : int):

@@ -12,20 +12,21 @@ import shelve
 import sport
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer, QTime
+from PyQt5.QtWidgets import QListWidgetItem
 import time
 import datetime
 
 class Ui_MainWindow(object):
 
-    # A Ajouter
     coach_sport = sport.Sport_Coach_Generator()
     page_serie = 0
     start_timer = time.time()
     temps_passe = 0
+    nb_series = 0 #Sera initialisé ensuite
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(471, 353)
+        MainWindow.resize(471, 364)
         self.tabWidget = QtWidgets.QTabWidget(MainWindow)
         self.tabWidget.setGeometry(QtCore.QRect(0, 0, 471, 361))
         font = QtGui.QFont()
@@ -35,7 +36,7 @@ class Ui_MainWindow(object):
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
         self.Label_bienvenue = QtWidgets.QLabel(self.tab)
-        self.Label_bienvenue.setGeometry(QtCore.QRect(160, 50, 141, 51))
+        self.Label_bienvenue.setGeometry(QtCore.QRect(120, 50, 221, 101))
         font = QtGui.QFont()
         font.setPointSize(15)
         font.setBold(False)
@@ -48,13 +49,9 @@ class Ui_MainWindow(object):
         self.tabWidget.addTab(self.tab, "")
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tab_2")
-        self.textDisplaySeries = QtWidgets.QTextBrowser(self.tab_2)
-        self.textDisplaySeries.setGeometry(QtCore.QRect(10, 10, 441, 281))
-        self.textDisplaySeries.setAutoFillBackground(False)
-        self.textDisplaySeries.setObjectName("textDisplaySeries")
         self.B_NextSerie = QtWidgets.QPushButton(self.tab_2)
         self.B_NextSerie.setEnabled(True)
-        self.B_NextSerie.setGeometry(QtCore.QRect(377, 300, 75, 23))
+        self.B_NextSerie.setGeometry(QtCore.QRect(377, 310, 75, 23))
         self.B_NextSerie.setCheckable(False)
         self.B_NextSerie.setAutoDefault(True)
         self.B_NextSerie.setDefault(False)
@@ -62,17 +59,42 @@ class Ui_MainWindow(object):
         self.B_NextSerie.setObjectName("B_NextSerie")
         self.B_PreviousSerie = QtWidgets.QPushButton(self.tab_2)
         self.B_PreviousSerie.setEnabled(True)
-        self.B_PreviousSerie.setGeometry(QtCore.QRect(290, 300, 75, 23))
+        self.B_PreviousSerie.setGeometry(QtCore.QRect(290, 310, 75, 23))
         self.B_PreviousSerie.setObjectName("B_PreviousSerie")
         self.LCD_Minutes = QtWidgets.QLCDNumber(self.tab_2)
-        self.LCD_Minutes.setGeometry(QtCore.QRect(10, 300, 64, 23))
+        self.LCD_Minutes.setGeometry(QtCore.QRect(10, 310, 64, 23))
         self.LCD_Minutes.setObjectName("LCD_Minutes")
         self.LCD_Secondes = QtWidgets.QLCDNumber(self.tab_2)
-        self.LCD_Secondes.setGeometry(QtCore.QRect(80, 300, 64, 23))
+        self.LCD_Secondes.setGeometry(QtCore.QRect(80, 310, 64, 23))
         self.LCD_Secondes.setObjectName("LCD_Secondes")
         self.B_SeriePret = QtWidgets.QPushButton(self.tab_2)
-        self.B_SeriePret.setGeometry(QtCore.QRect(193, 145, 75, 23))
+        self.B_SeriePret.setGeometry(QtCore.QRect(200, 160, 75, 23))
         self.B_SeriePret.setObjectName("B_SeriePret")
+        self.textDisplaySeries = QtWidgets.QListWidget(self.tab_2)
+        self.textDisplaySeries.setGeometry(QtCore.QRect(10, 40, 451, 261))
+        self.textDisplaySeries.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.textDisplaySeries.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.textDisplaySeries.setAutoScroll(False)
+        self.textDisplaySeries.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
+        self.textDisplaySeries.setDefaultDropAction(QtCore.Qt.IgnoreAction)
+        self.textDisplaySeries.setItemAlignment(QtCore.Qt.AlignCenter)
+        self.textDisplaySeries.setObjectName("textDisplaySeries")
+        self.Label_phase_serie = QtWidgets.QLabel(self.tab_2)
+        self.Label_phase_serie.setGeometry(QtCore.QRect(140, 0, 191, 41))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.Label_phase_serie.sizePolicy().hasHeightForWidth())
+        self.Label_phase_serie.setSizePolicy(sizePolicy)
+        self.Label_phase_serie.setAlignment(QtCore.Qt.AlignCenter)
+        self.Label_phase_serie.setObjectName("Label_phase_serie")
+        self.textDisplaySeries.raise_()
+        self.B_NextSerie.raise_()
+        self.B_PreviousSerie.raise_()
+        self.LCD_Minutes.raise_()
+        self.LCD_Secondes.raise_()
+        self.B_SeriePret.raise_()
+        self.Label_phase_serie.raise_()
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setEnabled(True)
@@ -97,6 +119,9 @@ class Ui_MainWindow(object):
         self.tableHistorique.horizontalHeader().setStretchLastSection(True)
         self.tableHistorique.verticalHeader().setVisible(False)
         self.tabWidget.addTab(self.tab_3, "")
+        self.tab_4 = QtWidgets.QWidget()
+        self.tab_4.setObjectName("tab_4")
+        self.tabWidget.addTab(self.tab_4, "")
 
 
         # Conectique du timer de la tab Série
@@ -116,8 +141,12 @@ class Ui_MainWindow(object):
         self.LCD_Minutes.setHidden(True)
         self.LCD_Secondes.setHidden(True)
         self.textDisplaySeries.setHidden(True)
+        self.Label_phase_serie.setHidden(True)
         # Et on associe au bouton prêt le lancement du timer et l'affichage des elements
         self.B_SeriePret.clicked.connect(self.b_serie_pret)
+
+        #Associe le clic sur le TextdisplaySeries à l'affiche de la vidéo correspondante
+        self.textDisplaySeries.itemClicked.connect(self.display_video)
         
 
         self.retranslateUi(MainWindow)
@@ -164,12 +193,14 @@ class Ui_MainWindow(object):
         memoire.close()
 
     def affichage_b_pret(self, bp_hidden : bool):
-        """ Si c'est true alors ça cache le bouton, et ça affiche tout le reste """
+        """ Affiche le bouton prêt et cache le reste (ou l'inverse, selon le booléen d'entrée)
+        Si c'est true alors ça cache le bouton, et ça affiche tout le reste """
         self.B_NextSerie.setHidden( not(bp_hidden) )
         self.B_PreviousSerie.setHidden( not(bp_hidden) )
         self.LCD_Minutes.setHidden( not(bp_hidden) )
         self.LCD_Secondes.setHidden( not(bp_hidden) )
         self.textDisplaySeries.setHidden( not(bp_hidden) )
+        self.Label_phase_serie.setHidden( not(bp_hidden) )
         self.B_SeriePret.setHidden( bp_hidden )
 
     def b_serie_pret(self):
@@ -184,6 +215,8 @@ class Ui_MainWindow(object):
 
         #On initialise la série et remet le bon affichage de série
         self.coach_sport.init_seance1()
+        #On enregistre en paramètre le nb de série dans cette séance
+        self.nb_series = len(self.coach_sport.seance.liste_series)
 
         # Initialise le texte du display avec les échauffements
         self.display_serie(0)
@@ -193,7 +226,7 @@ class Ui_MainWindow(object):
 
     # Bouton Next pour afficher la série suivante
     def b_next_clicked(self):
-        if self.page_serie < len(self.coach_sport.seance.liste_series) - 1: #Si on est avant l'avant dernière série ça autorise de passer a la suivante
+        if self.page_serie < self.nb_series - 1: #Si on est avant l'avant dernière série ça autorise de passer a la suivante
             self.page_serie += 1
             self.display_serie(self.page_serie)
         else: #Cad on a finit l'affichage de toute la séance, on appuit sur le bouton "J'ai finit !" --> ça enregistre la séance
@@ -210,7 +243,7 @@ class Ui_MainWindow(object):
         """ Bouton previous pour revenir à la série précédente """
         
         #Si avant c'était sur la dernière page alors on remet le texte du bouton next sur "Next"
-        if self.page_serie == len(self.coach_sport.seance.liste_series) - 1:
+        if self.page_serie == self.nb_series - 1:
             _translate = QtCore.QCoreApplication.translate
             self.B_NextSerie.setText(_translate("MainWindow", "Next !"))
 
@@ -219,17 +252,36 @@ class Ui_MainWindow(object):
             self.display_serie(self.page_serie)
 
     def display_serie(self, indice_serie):
+        """ Affiche la série de l'indice passé en paramètre """
+
+        if (indice_serie == 0): #cad c'est l'échauffement
+            self.Label_phase_serie.setText("ECHAUFFEMENT")
+        elif (indice_serie < self.nb_series - 1): #entre l'échauffement et la dernière 
+            self.Label_phase_serie.setText("LESSS Goooooo")
+        else:
+            self.Label_phase_serie.setText("On oublie pas les étirements à la fin !")
+
         # Clear l'affichage du GUI
         self.textDisplaySeries.clear()
         #Centre le texte, et faut le faire avant de print le texte
-        self.textDisplaySeries.setAlignment(QtCore.Qt.AlignCenter)
+        #self.textDisplaySeries.setAlignment(QtCore.Qt.AlignCenter)
 
         # Récupère la série correspondante au n° de la page
         text_list = self.coach_sport.affichage_serie(self.page_serie)
         
         # Affiche la série sur le GUI
         for i in text_list:
-            self.textDisplaySeries.insertPlainText(i)
+            item = QListWidgetItem(i)
+            item.setTextAlignment(QtCore.Qt.AlignCenter)
+            #passer par item c'est pour centrer chaque élément
+            self.textDisplaySeries.addItem(item)
+
+    def display_video(self, item :QListWidgetItem):
+        #print(item.text())
+        #print(item.listWidget().indexFromItem(item).row())
+        exercice = item.listWidget().indexFromItem(item).row()
+        nom_video = self.coach_sport.get_video(self.page_serie, exercice)
+        
 
     def display_timer(self):
         """ Affiche le timer sur la tab Série """
