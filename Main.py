@@ -11,12 +11,13 @@
 import shelve
 import sport
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtCore import QTimer, QTime
-from PyQt5.QtWidgets import QListWidgetItem
+from PyQt5.QtCore import QTimer, QUrl
+from PyQt5.QtWidgets import QListWidgetItem, QMainWindow, QWidget, QVBoxLayout
+from PyQt5.QtMultimedia import QMediaContent, QMediaPlayer
+from PyQt5.QtMultimediaWidgets import QVideoWidget
 import time
-import datetime
 
-class Ui_MainWindow(object):
+class Ui_MainWindow(QMainWindow):
 
     coach_sport = sport.Sport_Coach_Generator()
     page_serie = 0
@@ -25,6 +26,8 @@ class Ui_MainWindow(object):
     nb_series = 0 #Sera initialisé ensuite
 
     def setupUi(self, MainWindow):
+        super(Ui_MainWindow, self).__init__(MainWindow)
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(471, 364)
         self.tabWidget = QtWidgets.QTabWidget(MainWindow)
@@ -147,7 +150,24 @@ class Ui_MainWindow(object):
 
         #Associe le clic sur le TextdisplaySeries à l'affiche de la vidéo correspondante
         self.textDisplaySeries.itemClicked.connect(self.display_video)
-        
+        #Création de la boite d'affichage vidéo 
+        self.mediaPlayer = QtWidgets.QListWidget(self.tab_2)
+        # self.mediaPlayer.setGeometry(QtCore.QRect(10, 40, 451, 261))
+        self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
+        self.videoWidget = QVideoWidget()
+        # Create a widget for window contents
+        wid = QWidget(self)
+        self.setCentralWidget(wid)
+        layout = QVBoxLayout()
+        layout.addWidget(self.videoWidget)
+        # Set widget to contain window contents
+        wid.setLayout(layout)
+        self.mediaPlayer.setVideoOutput(self.videoWidget)
+        # self.videoWidget.setHidden(True)
+        fileName = "Assets/jumping_jacks.mp4"
+        self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(fileName)))
+        self.mediaPlayer.play()
+
 
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
