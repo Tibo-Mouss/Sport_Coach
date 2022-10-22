@@ -151,22 +151,22 @@ class Ui_MainWindow(QMainWindow):
         #Associe le clic sur le TextdisplaySeries à l'affiche de la vidéo correspondante
         self.textDisplaySeries.itemClicked.connect(self.display_video)
         #Création de la boite d'affichage vidéo 
-        self.mediaPlayer = QtWidgets.QListWidget(self.tab_2)
+        # self.mediaPlayer = QtWidgets.QListWidget(self.tab_2)
         # self.mediaPlayer.setGeometry(QtCore.QRect(10, 40, 451, 261))
-        self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
-        self.videoWidget = QVideoWidget()
-        # Create a widget for window contents
-        wid = QWidget(self)
-        self.setCentralWidget(wid)
-        layout = QVBoxLayout()
-        layout.addWidget(self.videoWidget)
-        # Set widget to contain window contents
-        wid.setLayout(layout)
-        self.mediaPlayer.setVideoOutput(self.videoWidget)
-        # self.videoWidget.setHidden(True)
-        fileName = "Assets/jumping_jacks.mp4"
-        self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(fileName)))
-        self.mediaPlayer.play()
+        # self.mediaPlayer = QMediaPlayer(None, QMediaPlayer.VideoSurface)
+        # self.videoWidget = QVideoWidget()
+        # # Create a widget for window contents
+        # wid = QWidget(self)
+        # self.setCentralWidget(wid)
+        # layout = QVBoxLayout()
+        # layout.addWidget(self.videoWidget)
+        # # Set widget to contain window contents
+        # wid.setLayout(layout)
+        # self.mediaPlayer.setVideoOutput(self.videoWidget)
+        # # self.videoWidget.setHidden(True)
+        # fileName = "Assets/jumping_jacks.mp4"
+        # self.mediaPlayer.setMedia(QMediaContent(QUrl.fromLocalFile(fileName)))
+        # self.mediaPlayer.play()
 
 
         self.retranslateUi(MainWindow)
