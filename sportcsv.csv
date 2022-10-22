@@ -1,21 +1,21 @@
-Pompes sur les genous,8
-Pompes normales,20
-Crunchies,4
-Mountain climbers lents – côtés //,10
-Mountain climbers rapide,3
-Mountain climbers lents – croisés touche genou,10
-Jumping jacks,2
-Levers de genous,2
-Squats,8
-Jumping Squats,10
-Pompe + saut,10
-Crunchies avec les jambes écartées,4
-Switching planks,25
-semi planche + {bras levé ? bras descendu),15
-Squats jambes écartées,8
-Au sol : lever les 2 jambes et les toucher,30
-Au sol : lever les 2 jambes,20
-Au sol : lever 1 jambe et la toucher,14
-Arches lentement,4
-Arches en sautant entre 2,10
-Grand Saut,8
+Pompes sur les genous,8,push_up_knee,Bras,
+Pompes normales,20,push_up,Bras,Abdos
+Crunchies,4,crunchies,Abdos,
+Mountain climbers lents cotes //,10,,Abdos,
+Mountain climbers rapide,3,mountain_climbers,Abdos,
+Mountain climbers lents â€“ croise touche genou,10,,Abdos,
+Jumping Jacks,2,jumping_jacks,Jambes,Bras
+Levers de genous,2,high_knees,Jambes,
+Squats,8,squat,Jambes,
+Jumping Squats,10,jumping_squats,Jambes,
+Burpees,10,burpees,Jambes,Bras
+Crunchies avec les jambes ecartees,4,crunchies,Abdos,
+Switching planks,25,,Abdos,Jambes
+Planche + {bras tendus & avant bras),15,planche_bras_tendus_bras_avant_bras,Abdos,Jambes
+Squats jambes ecartees,8,,Abdos,
+Au sol : lever les 2 jambes et les toucher,30,,Abdos,
+Au sol : lever les 2 jambes,20,,Abdos,
+Au sol : lever 1 jambe et la toucher,14,,Abdos,
+Arches lentement,4,arches_lentes,Jambes,
+Arches en sautant entre 2,10,,Jambes,
+Grand Saut,8,high_jumps,Jambes,
